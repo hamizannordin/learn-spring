@@ -1,10 +1,10 @@
-package twice.learn.spring;
+package com.hamizan.app.ligabolehland;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ApplicationTests {
+class LigaBolehlandApplicationTests {
 
 	@Test
 	void contextLoads() {
