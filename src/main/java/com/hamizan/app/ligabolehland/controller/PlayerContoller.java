@@ -6,11 +6,14 @@
 package com.hamizan.app.ligabolehland.controller;
 
 import com.hamizan.app.ligabolehland.LigaBolehlandController;
-import com.hamizan.app.ligabolehland.database.Player;
+import com.hamizan.app.ligabolehland.request.PlayerRequest;
+import com.hamizan.app.ligabolehland.response.BasicResponse;
 import com.hamizan.app.ligabolehland.service.PlayerService;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -23,9 +26,9 @@ public class PlayerContoller extends LigaBolehlandController {
     @Autowired
     PlayerService service;
     
-    @GetMapping("/player")
-    public List<Player> get () {
-        return service.get();
+    @PostMapping("/player/create")
+    public ResponseEntity<BasicResponse> create (@RequestBody PlayerRequest request){
+        return service.createPlayer(request);
     }
     
 }

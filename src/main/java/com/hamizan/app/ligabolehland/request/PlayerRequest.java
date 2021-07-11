@@ -3,57 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.hamizan.app.ligabolehland.database;
-
-import java.io.Serializable;
-import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
+package com.hamizan.app.ligabolehland.request;
 
 /**
  *
  * @author hamizan
  */
-@Entity
-@Table(name = "PLAYER")
-public class Player implements Serializable {
+public class PlayerRequest {
     
-    @Id
-    //@GeneratedValue
-    @Column(name = "PLAYER_ID")
     private String playerId;
-    
-    @Column(name = "PLAYER_NAME")
     private String playerName;
-    
-    @Column(name = "POSITION")
     private String position;
-    
-    @Column(name = "DATEOFBIRTH")
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date dateOfBirth;
-    
-    @Column(name = "TEAM_ID")
+    private String dateOfBirth;
     private String teamId;
-    
-    @Column(name = "NATIONALITY")
     private String nationality;
-    
-    @Column(name = "TRANSFER_STATUS")
     private String transferStatus;
-    
-    @Column(name = "CONTRACT")
     private String contract;
-    
-    @Column(name = "WAGE")
     private String wage;
-
-    public Player() {
-    }
 
     public String getPlayerId() {
         return playerId;
@@ -79,11 +45,11 @@ public class Player implements Serializable {
         this.position = position;
     }
 
-    public Date getDateOfBirth() {
+    public String getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -126,4 +92,5 @@ public class Player implements Serializable {
     public void setWage(String wage) {
         this.wage = wage;
     }
+    
 }

@@ -20,4 +20,7 @@ public interface PlayerRepository extends CrudRepository<Player, BigInteger> {
 
     @Override
     public List<Player> findAll ();
+    
+    @Override
+    public Player save (Player player);
 }
