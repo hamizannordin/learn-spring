@@ -9,6 +9,7 @@ import com.hamizan.app.ligabolehland.database.Player;
 import com.hamizan.app.ligabolehland.request.PlayerRequest;
 import com.hamizan.app.ligabolehland.repository.PlayerRepository;
 import com.hamizan.app.ligabolehland.response.BasicResponse;
+import com.hamizan.app.ligabolehland.response.PlayerViewResponse;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -87,6 +88,47 @@ public class PlayerService {
             log.info("Fail to create player");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                     new BasicResponse("Fail to create player"));
+        }
+    }
+
+    /**
+     * View detailed info of player
+     * @param playerId
+     * @return BasicResponse - player info
+     */
+    public ResponseEntity<BasicResponse> viewPlayer(String playerId) {
+        
+        if(playerId == null || playerId.isEmpty()){
+            log.info("Player id is null or empty");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                new BasicResponse("Player id is null or empty"));
+        }
+        
+        Player player = playerRepo.findPlayerByPlayerId(playerId);
+        
+        if(player != null){
+            log.info("Found player: " + player.getPlayerId());
+            
+            PlayerViewResponse playerViewResponse = new PlayerViewResponse();
+            playerViewResponse.setPlayerId(player.getPlayerId());
+            playerViewResponse.setPlayerName(player.getPlayerName());
+            playerViewResponse.setContract(player.getContract());
+            playerViewResponse.setDateOfBirth(sdf.format(player.getDateOfBirth()));
+            playerViewResponse.setNationality(player.getNationality());
+            playerViewResponse.setPosition(player.getPosition());
+            playerViewResponse.setTeam(player.getTeamId());
+            playerViewResponse.setTransferStatus(player.getTransferStatus());
+            playerViewResponse.setWage(player.getWage());
+            
+            BasicResponse basicResponse = new BasicResponse("Success");
+            basicResponse.setBody(playerViewResponse);
+            
+            return ResponseEntity.status(HttpStatus.OK).body(basicResponse);
+        }
+        else {
+            log.info("Player not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new BasicResponse("Player not found"));
         }
     }
 }

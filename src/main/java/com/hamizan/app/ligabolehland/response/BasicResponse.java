@@ -12,7 +12,8 @@ package com.hamizan.app.ligabolehland.response;
 public class BasicResponse {
     
     private String message;
-
+    private Object body;
+    
     public BasicResponse(String message) {
         this.message = message;
     }
@@ -24,4 +25,13 @@ public class BasicResponse {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    public Object getBody() {
+        return body;
+    }
+
+    public void setBody(Object body) {
+        this.body = body;
+    }
+  
 }
