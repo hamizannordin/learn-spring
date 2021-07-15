@@ -22,20 +22,20 @@ public class ResponseHandler {
     
     public static class OK {
         
-        public static ResponseEntity build (String body){
-            return response200.body(new BasicResponse(body));
+        public static ResponseEntity build (String message, Object body){
+            return response200.body(new BasicResponse(message, body));
         }
     }
     public static class BAD_REQ {
     
-        public static ResponseEntity build (String body){
-            return response400.body(new BasicResponse(body));
+        public static ResponseEntity build (String message, Object body){
+            return response400.body(new BasicResponse(message, body));
         }
     }
     public static class SERVER_ERROR {
     
-        public static ResponseEntity build (String body){
-            return response500.body(new BasicResponse(body));
+        public static ResponseEntity build (String message, Object body){
+            return response500.body(new BasicResponse(message, body));
         }
     }
     

@@ -13,9 +13,17 @@ public class BasicResponse {
     
     private String message;
     private Object body;
+
+    public BasicResponse() {
+    }
     
     public BasicResponse(String message) {
         this.message = message;
+    }
+
+    public BasicResponse(String message, Object body) {
+        this.message = message;
+        this.body = body;
     }
 
     public String getMessage() {
