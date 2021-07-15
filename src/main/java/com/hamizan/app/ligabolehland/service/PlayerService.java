@@ -10,6 +10,7 @@ import com.hamizan.app.ligabolehland.request.PlayerRequest;
 import com.hamizan.app.ligabolehland.repository.PlayerRepository;
 import com.hamizan.app.ligabolehland.response.BasicResponse;
 import com.hamizan.app.ligabolehland.response.PlayerViewResponse;
+import com.hamizan.app.ligabolehland.util.ResponseHandler;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -129,6 +130,63 @@ public class PlayerService {
             log.info("Player not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                     new BasicResponse("Player not found"));
+        }
+    }
+
+    /**
+     * Update player detail
+     * @param request
+     * @return 
+     */
+    public ResponseEntity<BasicResponse> updatePlayer(PlayerRequest request) {
+        
+        if(request.getPlayerId() == null || request.getPlayerId().isEmpty()){
+            log.info("Player id is null or empty");
+            return ResponseHandler.BAD_REQ.build("Player id is null or empty", null);
+        }
+        
+        String playerId = request.getPlayerId();
+        log.info("Finding player with id: " + playerId);
+        
+        Player player = playerRepo.findPlayerByPlayerId(playerId);
+        
+        if(player == null){
+            log.info("Player not found");
+            return ResponseHandler.BAD_REQ.build("Player not found", null);
+        }
+        
+        if(request.getContract() != null){
+            player.setContract(request.getContract());
+        }
+        if(request.getNationality() != null && !request.getNationality().isEmpty()){
+            player.setNationality(request.getNationality());
+        }
+        if(request.getPlayerName() != null && !request.getPlayerName().isEmpty()){
+            player.setPlayerName(request.getPlayerName());
+        }
+        if(request.getPosition() != null && !request.getPosition().isEmpty()){
+            player.setPosition(request.getPosition());
+        }
+        if(request.getTeamId() != null){
+            player.setTeamId(request.getTeamId());
+        }
+        if(request.getTransferStatus() != null){
+            player.setTransferStatus(request.getTransferStatus());
+        }
+        if(request.getWage() != null){
+            player.setWage(request.getWage());
+        }
+        
+        log.info("Updating player detail...");
+        Player updatedPlayer = playerRepo.save(player);
+        
+        if(updatedPlayer != null){
+            log.info("Success update player " + playerId);
+            return ResponseHandler.OK.build("Update success", updatedPlayer);
+        }
+        else {
+            log.info("Fail to update player");
+            return ResponseHandler.SERVER_ERROR.build("Fail to update player", null);
         }
     }
 }
