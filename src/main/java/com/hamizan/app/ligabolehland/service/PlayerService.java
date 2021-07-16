@@ -34,6 +34,9 @@ public class PlayerService {
     @Autowired
     PlayerRepository playerRepo;
     
+    @Autowired
+    ResponseHandler responseHandler;
+    
     /**
      * Create new player
      * @param request
@@ -142,7 +145,7 @@ public class PlayerService {
         
         if(request.getPlayerId() == null || request.getPlayerId().isEmpty()){
             log.info("Player id is null or empty");
-            return ResponseHandler.BAD_REQ.build("Player id is null or empty", null);
+            return responseHandler.badRequest("Player id is null or empty", null);
         }
         
         String playerId = request.getPlayerId();
@@ -152,7 +155,7 @@ public class PlayerService {
         
         if(player == null){
             log.info("Player not found");
-            return ResponseHandler.BAD_REQ.build("Player not found", null);
+            return responseHandler.badRequest("Player not found", null);
         }
         
         if(request.getContract() != null){
@@ -182,11 +185,11 @@ public class PlayerService {
         
         if(updatedPlayer != null){
             log.info("Success update player " + playerId);
-            return ResponseHandler.OK.build("Update success", updatedPlayer);
+            return responseHandler.ok("Update success", updatedPlayer);
         }
         else {
             log.info("Fail to update player");
-            return ResponseHandler.SERVER_ERROR.build("Fail to update player", null);
+            return responseHandler.serverError("Fail to update player", null);
         }
     }
 }
