@@ -42,4 +42,23 @@ public class PlayerContoller extends LigaBolehlandController {
     public ResponseEntity<BasicResponse> update (@RequestBody PlayerRequest request){
         return service.updatePlayer(request);
     }
+    
+    @GetMapping("/player/findAll")
+    public ResponseEntity<BasicResponse> findAll (){
+        return service.findAllPlayer();
+    }
+    
+    @GetMapping("/player/find")
+    public ResponseEntity<BasicResponse> find (
+            @RequestParam(value = "name", required = false) String playerName,
+            @RequestParam(value = "position", required = false) String position,
+            @RequestParam(value = "year", required = false) String year,
+            @RequestParam(value = "team-id", required = false) String teamId,
+            @RequestParam(value = "nationality", required = false) String nationality,
+            @RequestParam(value = "transfer-status", required = false) String transferStatus,
+            @RequestParam(value = "contract", required = false) String contract,
+            @RequestParam(value = "wage", required = false) String wage){
+        return service.findPlayer(playerName, position, year, teamId,
+                nationality, transferStatus, contract, wage);
+    }
 }

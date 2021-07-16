@@ -27,4 +27,8 @@ public interface PlayerRepository extends CrudRepository<Player, BigInteger> {
     
     @Query(value = "SELECT * FROM PLAYER WHERE PLAYER_ID =:playerId", nativeQuery = true)
     public Player findPlayerByPlayerId (String playerId);
+    
+    @Query(value = "SELECT * FROM PLAYER WHERE (POSITION =:position AND NATIONALITY =:nationality)",
+            nativeQuery = true)
+    public List<Player> findPlayerWithParam (String position, String nationality);
 }

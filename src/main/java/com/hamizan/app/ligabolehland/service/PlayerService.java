@@ -192,4 +192,35 @@ public class PlayerService {
             return responseHandler.serverError("Fail to update player", null);
         }
     }
+    
+    /**
+     * Display list of all players
+     * @return list all players
+     */
+    public ResponseEntity<BasicResponse> findAllPlayer() {
+        List<Player> listPlayer = playerRepo.findAll();
+        log.info("Total players: " + listPlayer.size());
+        return responseHandler.ok("Success", listPlayer);
+    }
+
+    /**
+     * Filter list of player by specific @param
+     * @param playerId
+     * @param playerName
+     * @param position
+     * @param year
+     * @param teamId
+     * @param nationality
+     * @param transferStatus
+     * @param contract
+     * @param wage
+     * @return list of filtered players
+     */
+    public ResponseEntity<BasicResponse> findPlayer(String playerName, 
+            String position, String year, String teamId, String nationality, 
+            String transferStatus, String contract, String wage) {
+        List<Player> listPlayer = playerRepo.findPlayerWithParam(position, nationality);
+        log.info("Total players found: " + listPlayer.size());
+        return responseHandler.ok("Success", listPlayer);
+    }
 }
