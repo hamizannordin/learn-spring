@@ -7,6 +7,9 @@ package com.hamizan.app.ligabolehland.repository;
 
 import com.hamizan.app.ligabolehland.database.Player;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -38,7 +41,7 @@ public class PlayerImpRepository implements PlayerCustomRepository {
         
         Path<String> namePath = player.get("playerName");
         Path<String> positionPath = player.get("position");
-        //Path<String> yearPath = player.get("dateOfBirth");
+        Path<Date> yearPath = player.get("dateOfBirth");
         Path<String> teamPath = player.get("teamId");
         Path<String> nationalityPath = player.get("nationality");
         Path<String> transferPath = player.get("transferStatus");
@@ -49,6 +52,15 @@ public class PlayerImpRepository implements PlayerCustomRepository {
         
         if(playerName != null && !playerName.isEmpty()){
             predicates.add(criteriaBuilder.like(namePath, playerName));
+        }
+        if(year != null && !year.isEmpty()){
+            Calendar yearStart = new GregorianCalendar();
+            Calendar yearEnd = new GregorianCalendar();
+            
+            yearStart.set(Integer.parseInt(year), 0, 1);
+            yearEnd.set(Integer.parseInt(year), 11, 31);
+            
+            predicates.add(criteriaBuilder.between(yearPath, yearStart.getTime(), yearEnd.getTime()));
         }
         if(position != null && !position.isEmpty()){
             predicates.add(criteriaBuilder.like(positionPath, position));
