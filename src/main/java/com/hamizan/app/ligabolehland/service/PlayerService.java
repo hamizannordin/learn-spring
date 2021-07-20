@@ -6,6 +6,7 @@
 package com.hamizan.app.ligabolehland.service;
 
 import com.hamizan.app.ligabolehland.database.Player;
+import com.hamizan.app.ligabolehland.repository.PlayerImpRepository;
 import com.hamizan.app.ligabolehland.request.PlayerRequest;
 import com.hamizan.app.ligabolehland.repository.PlayerRepository;
 import com.hamizan.app.ligabolehland.response.BasicResponse;
@@ -33,6 +34,9 @@ public class PlayerService {
     
     @Autowired
     PlayerRepository playerRepo;
+    
+    @Autowired
+    PlayerImpRepository playerImpRepo;
     
     @Autowired
     ResponseHandler responseHandler;
@@ -205,7 +209,6 @@ public class PlayerService {
 
     /**
      * Filter list of player by specific @param
-     * @param playerId
      * @param playerName
      * @param position
      * @param year
@@ -219,8 +222,15 @@ public class PlayerService {
     public ResponseEntity<BasicResponse> findPlayer(String playerName, 
             String position, String year, String teamId, String nationality, 
             String transferStatus, String contract, String wage) {
-        List<Player> listPlayer = playerRepo.findPlayerWithParam(position, nationality);
-        log.info("Total players found: " + listPlayer.size());
-        return responseHandler.ok("Success", listPlayer);
+        
+        List<Player> listPlayer = playerImpRepo.findPlayerWithParam(playerName,
+                position, year, teamId, nationality, transferStatus, contract, wage);
+        
+        if(listPlayer != null){
+            log.info("Total player(s) found: " + listPlayer.size());
+            return responseHandler.ok("Total found: " + listPlayer.size(), listPlayer);
+        } else {
+            return responseHandler.serverError("Please retry again", null);
+        }
     }
 }

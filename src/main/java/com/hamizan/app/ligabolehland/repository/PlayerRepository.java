@@ -6,7 +6,6 @@
 package com.hamizan.app.ligabolehland.repository;
 
 import com.hamizan.app.ligabolehland.database.Player;
-import java.math.BigInteger;
 import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -17,7 +16,7 @@ import org.springframework.stereotype.Repository;
  * @author hamizan
  */
 @Repository
-public interface PlayerRepository extends CrudRepository<Player, BigInteger> {
+public interface PlayerRepository extends CrudRepository<Player, String> {
 
     @Override
     public List<Player> findAll ();
@@ -28,7 +27,4 @@ public interface PlayerRepository extends CrudRepository<Player, BigInteger> {
     @Query(value = "SELECT * FROM PLAYER WHERE PLAYER_ID =:playerId", nativeQuery = true)
     public Player findPlayerByPlayerId (String playerId);
     
-    @Query(value = "SELECT * FROM PLAYER WHERE (POSITION =:position AND NATIONALITY =:nationality)",
-            nativeQuery = true)
-    public List<Player> findPlayerWithParam (String position, String nationality);
 }
