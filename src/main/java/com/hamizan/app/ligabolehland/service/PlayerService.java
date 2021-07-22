@@ -6,14 +6,13 @@
 package com.hamizan.app.ligabolehland.service;
 
 import com.hamizan.app.ligabolehland.database.Player;
-import com.hamizan.app.ligabolehland.repository.PlayerImpRepository;
 import com.hamizan.app.ligabolehland.request.PlayerRequest;
 import com.hamizan.app.ligabolehland.repository.PlayerRepository;
 import com.hamizan.app.ligabolehland.response.BasicResponse;
 import com.hamizan.app.ligabolehland.response.PlayerViewResponse;
+import com.hamizan.app.ligabolehland.util.DateFormatter;
 import com.hamizan.app.ligabolehland.util.ResponseHandler;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,13 +29,12 @@ import org.springframework.stereotype.Service;
 public class PlayerService {
     
     Logger log = LoggerFactory.getLogger(this.getClass().getName());
-    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
     
     @Autowired
     PlayerRepository playerRepo;
     
     @Autowired
-    PlayerImpRepository playerImpRepo;
+    DateFormatter dateFormatter;
     
     @Autowired
     ResponseHandler responseHandler;
@@ -73,30 +71,31 @@ public class PlayerService {
         player.setPosition(request.getPosition());
         try {
             log.info(request.getDateOfBirth());
-            player.setDateOfBirth(sdf.parse(request.getDateOfBirth()));
+            player.setDateOfBirth(dateFormatter.date(request.getDateOfBirth()));
         } catch (ParseException ex) {
             log.error(ex.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                     new BasicResponse("Invalid birth date"));
         }
-        player.setTeamId(request.getTeamId());
+        //player.setTeamId(request.getTeamId());
         player.setNationality(request.getNationality());
         player.setContract(request.getContract());
         player.setWage(request.getWage());
         
         log.info("Saving player.... " + playerId);
-        Player newPlayer = playerRepo.save(player);
+        //Player newPlayer = playerRepo.save(player);
+        playerRepo.save(player);
         
-        if(newPlayer != null){
+        //if(newPlayer != null){
             log.info("Success create player");
             return ResponseEntity.status(HttpStatus.OK).body(
                     new BasicResponse("Success create player"));
-        } 
-        else {
-            log.info("Fail to create player");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    new BasicResponse("Fail to create player"));
-        }
+        //} 
+        //else {
+        //    log.info("Fail to create player");
+        //    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+        //            new BasicResponse("Fail to create player"));
+        //}
     }
 
     /**
@@ -121,10 +120,10 @@ public class PlayerService {
             playerViewResponse.setPlayerId(player.getPlayerId());
             playerViewResponse.setPlayerName(player.getPlayerName());
             playerViewResponse.setContract(player.getContract());
-            playerViewResponse.setDateOfBirth(sdf.format(player.getDateOfBirth()));
+            playerViewResponse.setDateOfBirth(dateFormatter.dateString(player.getDateOfBirth()));
             playerViewResponse.setNationality(player.getNationality());
             playerViewResponse.setPosition(player.getPosition());
-            playerViewResponse.setTeam(player.getTeamId());
+            playerViewResponse.setTeam(player.getTeamId().getTeamId());
             playerViewResponse.setTransferStatus(player.getTransferStatus());
             playerViewResponse.setWage(player.getWage());
             
@@ -174,9 +173,9 @@ public class PlayerService {
         if(request.getPosition() != null && !request.getPosition().isEmpty()){
             player.setPosition(request.getPosition());
         }
-        if(request.getTeamId() != null){
-            player.setTeamId(request.getTeamId());
-        }
+        //if(request.getTeamId() != null){
+        //    player.setTeamId(request.getTeamId());
+        //}
         if(request.getTransferStatus() != null){
             player.setTransferStatus(request.getTransferStatus());
         }
@@ -185,26 +184,17 @@ public class PlayerService {
         }
         
         log.info("Updating player detail...");
-        Player updatedPlayer = playerRepo.save(player);
+        //Player updatedPlayer = playerRepo.save(player);
+        playerRepo.save(player);
         
-        if(updatedPlayer != null){
+        //if(updatedPlayer != null){
             log.info("Success update player " + playerId);
-            return responseHandler.ok("Update success", updatedPlayer);
-        }
-        else {
-            log.info("Fail to update player");
-            return responseHandler.serverError("Fail to update player", null);
-        }
-    }
-    
-    /**
-     * Display list of all players
-     * @return list all players
-     */
-    public ResponseEntity<BasicResponse> findAllPlayer() {
-        List<Player> listPlayer = playerRepo.findAll();
-        log.info("Total players: " + listPlayer.size());
-        return responseHandler.ok("Success", listPlayer);
+            return responseHandler.ok("Update success", null);
+        //}
+        //else {
+        //    log.info("Fail to update player");
+        //    return responseHandler.serverError("Fail to update player", null);
+        //}
     }
 
     /**
@@ -223,7 +213,7 @@ public class PlayerService {
             String position, String year, String teamId, String nationality, 
             String transferStatus, String contract, String wage) {
         
-        List<Player> listPlayer = playerImpRepo.findPlayerWithParam(playerName,
+        List<Player> listPlayer = playerRepo.findPlayerWithParam(playerName,
                 position, year, teamId, nationality, transferStatus, contract, wage);
         
         if(listPlayer != null){

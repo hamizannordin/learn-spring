@@ -5,6 +5,7 @@
  */
 package com.hamizan.app.ligabolehland.repository;
 
+import com.hamizan.app.ligabolehland.database.Team;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -14,5 +15,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class TeamRepository extends RepositoryFacade {
     
+    public long count () {
+        return count(Team.class);
+    }
     
 }

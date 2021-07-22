@@ -43,11 +43,6 @@ public class PlayerContoller extends LigaBolehlandController {
         return service.updatePlayer(request);
     }
     
-    @GetMapping("/player/findAll")
-    public ResponseEntity<BasicResponse> findAll (){
-        return service.findAllPlayer();
-    }
-    
     @GetMapping("/player/find")
     public ResponseEntity<BasicResponse> find (
             @RequestParam(value = "name", required = false) String playerName,

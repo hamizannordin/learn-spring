@@ -48,6 +48,9 @@ public class TeamService {
         team.setAwayKit(request.getAwayKit());
         
         team.setTeamId("testing");
+        
+        long count = teamRepository.count();
+        log.info(Long.toString(count));
             
         teamRepository.save(team);
         

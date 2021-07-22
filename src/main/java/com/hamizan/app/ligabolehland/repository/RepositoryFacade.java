@@ -7,6 +7,8 @@ package com.hamizan.app.ligabolehland.repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -21,6 +23,16 @@ public class RepositoryFacade {
     @Transactional
     public void save (Object object){
         entityManager.persist(object);
+    }
+    
+    public long count (Class c) {
+        
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
+        
+        query.select(criteriaBuilder.count(query.from(c)));
+        
+        return entityManager.createQuery(query).getSingleResult();
     }
     
 }

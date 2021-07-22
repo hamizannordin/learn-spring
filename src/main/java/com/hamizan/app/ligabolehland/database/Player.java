@@ -9,7 +9,6 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -25,7 +24,6 @@ import javax.persistence.Temporal;
 public class Player implements Serializable {
     
     @Id
-    //@GeneratedValue
     @Column(name = "PLAYER_ID")
     private String playerId;
     
@@ -39,10 +37,9 @@ public class Player implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date dateOfBirth;
     
-//    @ManyToOne
-//    @JoinColumn(name = "TEAM_ID", referencedColumnName="TEAM_ID")
-    @Column(name = "TEAM_ID")
-    private String teamId;
+    @ManyToOne
+    @JoinColumn(name = "TEAM_ID", referencedColumnName="TEAM_ID")
+    private Team teamId;
     
     @Column(name = "NATIONALITY")
     private String nationality;
@@ -91,11 +88,11 @@ public class Player implements Serializable {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public String getTeamId() {
+    public Team getTeamId() {
         return teamId;
     }
 
-    public void setTeamId(String teamId) {
+    public void setTeamId(Team teamId) {
         this.teamId = teamId;
     }
 
