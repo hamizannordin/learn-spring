@@ -6,6 +6,13 @@
 package com.hamizan.app.ligabolehland.repository;
 
 import com.hamizan.app.ligabolehland.database.Team;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -17,6 +24,26 @@ public class TeamRepository extends RepositoryFacade {
     
     public long count () {
         return count(Team.class);
+    }
+    
+    public Team findTeamById (String teamId){
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Team> query = criteriaBuilder.createQuery(Team.class);
+        Root<Team> team = query.from(Team.class);
+        
+        Path<String> idPath = team.get("teamId");
+        List<Predicate> predicates = new ArrayList<>();
+        
+        predicates.add(criteriaBuilder.like(idPath, teamId));
+        
+        query.select(team)
+                .where(criteriaBuilder
+                        .and(predicates.toArray(
+                                new Predicate[predicates.size()])
+                        )
+                );
+        
+        return entityManager.createQuery(query).getSingleResult();
     }
     
 }

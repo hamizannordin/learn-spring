@@ -26,11 +26,16 @@ public class TeamService {
     Logger log = LoggerFactory.getLogger(this.getClass().getName());
     
     @Autowired
-    TeamRepository teamRepository;
+    TeamRepository teamRepo;
     
     @Autowired
     ResponseHandler responseHandler;
 
+    /**
+     * Create new team
+     * @param request
+     * @return success, fail
+     */
     public ResponseEntity<BasicResponse> createTeam(TeamRequest request) {
         
         if(request.getTeamName() == null || request.getTeamName().isEmpty()){
@@ -49,13 +54,35 @@ public class TeamService {
         
         team.setTeamId("testing");
         
-        long count = teamRepository.count();
+        long count = teamRepo.count();
         log.info(Long.toString(count));
             
-        teamRepository.save(team);
+        teamRepo.save(team);
         
         log.info("Success create player");
         return responseHandler.ok("Success", team);
+    }
+
+    /**
+     * View team details
+     * @param teamId
+     * @return team details
+     */
+    public ResponseEntity<BasicResponse> viewTeam(String teamId) {
+        
+        if(teamId == null || teamId.isEmpty()){
+            log.info("Team id is null or empty");
+            return responseHandler.badRequest("Team id is null or empty", null);
+        }
+        
+        try {
+            Team team = teamRepo.findTeamById(teamId);
+            log.info("Team found: " + team.getTeamId());
+            return responseHandler.ok("Success", team);
+        } catch (Exception e){
+            log.info("Team not found: " + e.toString());
+            return responseHandler.notFound("Team not found", null);
+        }
     }
     
 }
