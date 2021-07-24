@@ -52,14 +52,27 @@ public class TeamService {
         team.setHomeKit(request.getHomeKit());
         team.setAwayKit(request.getAwayKit());
         
-        team.setTeamId("testing");
+        String teamCount = Long.toString(teamRepo.count() + 1);
+        String teamId = "T-";
+        
+        int idStopper = 5  - teamCount.length();
+        
+        for(int i=0; i < idStopper; i++){
+            if(i == idStopper - 1){
+                teamId += teamCount;
+                break;
+            }
+            teamId += "0";
+        }
+        
+        team.setTeamId(teamId);
         
         long count = teamRepo.count();
         log.info(Long.toString(count));
             
         teamRepo.save(team);
         
-        log.info("Success create player");
+        log.info("Success create team: " + team.getTeamId());
         return responseHandler.ok("Success", team);
     }
 
@@ -74,13 +87,63 @@ public class TeamService {
             log.info("Team id is null or empty");
             return responseHandler.badRequest("Team id is null or empty", null);
         }
+            
+        Team team = teamRepo.findTeamById(teamId);
         
-        try {
-            Team team = teamRepo.findTeamById(teamId);
+        if(team != null){
             log.info("Team found: " + team.getTeamId());
             return responseHandler.ok("Success", team);
-        } catch (Exception e){
-            log.info("Team not found: " + e.toString());
+        } 
+        else {
+            log.info("Team not found");
+            return responseHandler.notFound("Team not found", null);
+        }
+    }
+
+    /**
+     * Update team details
+     * @param teamId
+     * @param request
+     * @return 
+     */
+    public ResponseEntity<BasicResponse> updateTeam(String teamId, TeamRequest request) {
+         
+        if(teamId == null || teamId.isEmpty()){
+            log.info("Team id is null or empty");
+            return responseHandler.badRequest("Team id is null or empty", null);
+        }
+        
+        Team team = teamRepo.findTeamById(teamId);
+        
+        if(team != null){
+            if(request.getTeamName() != null && !request.getTeamName().isEmpty()){
+                team.setTeamName(request.getTeamName());
+            }
+            if(request.getLeagueId() != null){
+                team.setLeagueId(request.getLeagueId());
+            }
+            if(request.getCupId() != null){
+                team.setCupId(request.getCupId());
+            }
+            if(request.getStadiumId() != null){
+                team.setStadiumId(request.getStadiumId());
+            }
+            if(request.getHomeKit() != null){
+                team.setHomeKit(request.getHomeKit());
+            }
+            if(request.getAwayKit() != null){
+                team.setAwayKit(request.getAwayKit());
+            }
+            if(request.getManagerId() != null){
+                team.setManagerId(request.getManagerId());
+            }
+            
+            log.info("Updating team: " + team.getTeamId());
+            teamRepo.save(team);
+            return responseHandler.ok("Success", team);
+        }
+        else {
+            log.info("Team not found");
             return responseHandler.notFound("Team not found", null);
         }
     }

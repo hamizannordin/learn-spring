@@ -42,8 +42,11 @@ public class TeamRepository extends RepositoryFacade {
                                 new Predicate[predicates.size()])
                         )
                 );
-        
-        return entityManager.createQuery(query).getSingleResult();
+        try {
+            return entityManager.createQuery(query).getSingleResult();
+        } catch (Exception e){
+            return null;
+        }
     }
     
 }

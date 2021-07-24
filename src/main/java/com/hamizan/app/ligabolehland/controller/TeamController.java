@@ -12,7 +12,9 @@ import com.hamizan.app.ligabolehland.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,4 +38,12 @@ public class TeamController extends LigaBolehlandController {
     public ResponseEntity<BasicResponse> view (@RequestParam("team-id") String teamId){
         return service.viewTeam(teamId);
     }
+    
+    @PutMapping("/team/update/{team-id}")
+    public ResponseEntity<BasicResponse> update (
+            @PathVariable("team-id") String teamId,
+            @RequestBody TeamRequest request){
+        return service.updateTeam(teamId, request);
+    }
+    
 }
