@@ -38,9 +38,9 @@ public class CompetitionService {
     private ResponseHandler responseHandler;
     
     /**
-     * 
+     * Create new competition
      * @param request
-     * @return 
+     * @return competition
      */
     public ResponseEntity<BasicResponse> createCompetition (CompetitionRequest request){
         
@@ -92,7 +92,31 @@ public class CompetitionService {
     }
     
     /**
-     * 
+     * View a competition detail
+     * @param competitionId
+     * @return 
+     */
+    public ResponseEntity<BasicResponse> viewCompetition (String competitionId){
+        
+        if(competitionId == null || competitionId.isEmpty()){
+            log.info("Invalid competition id");
+            return responseHandler.badRequest("Invalid competition id", null);
+        }
+        
+        Competition competition = competitionRepository.findByCompetitionId(competitionId);
+        
+        if(competition != null){
+            log.info("Competition found: " + competition.getCompetitionName());
+            return responseHandler.ok("Success", competition);
+        }
+        else {
+            log.info("Competition not found");
+            return responseHandler.notFound("Competition not found", null);
+        }
+    }
+    
+    /**
+     * Generate competition id
      * @param head
      * @return 
      */
