@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import org.slf4j.Logger;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -16,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
  * @author hamizan
  */
 public class RepositoryFacade {
+    
+    Logger log;
     
     @PersistenceContext
     public EntityManager entityManager;
