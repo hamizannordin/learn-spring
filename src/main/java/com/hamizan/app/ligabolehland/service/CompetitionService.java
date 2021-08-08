@@ -194,6 +194,67 @@ public class CompetitionService {
         }
     }
     
+    public ResponseEntity<BasicResponse> removeTeam (String competitionId,
+            CompetitionAddTeamRequest request){
+        
+        if(competitionId == null || competitionId.isEmpty()){
+            log.info("Invalid competition id");
+            return responseHandler.badRequest("Invalid competition id", null);
+        }
+        
+        if(request.getTeamList() == null || request.getTeamList().isEmpty()){
+            log.info("No team to remove");
+            return responseHandler.badRequest("No team to remove", null);
+        }
+        
+        Competition competition = competitionRepository.findByCompetitionId(competitionId);
+        
+        if(competition != null){
+            
+            List<String> successUpdateTeam = new ArrayList<>();
+            List<String> failUpdateTeam = new ArrayList<>();
+            
+            for(String teamId : request.getTeamList()){
+                
+                if(teamId != null && !teamId.isEmpty()){
+                    
+                    Team team = teamRepository.findTeamById(teamId);
+                    
+                    if(team != null){
+                        if(competition.getType().equalsIgnoreCase("LEAGUE")){
+                            if(team.getLeagueId() != null && team.getLeagueId()
+                                    .getCompetitionId()
+                                    .equalsIgnoreCase(competitionId)){
+                                team.setLeagueId(null);
+                            }
+                        }
+                        else {
+                            if(team.getCupId() != null && team.getCupId()
+                                    .getCompetitionId()
+                                    .equalsIgnoreCase(competitionId)){
+                                team.setCupId(null);
+                            }
+                        }
+                        teamRepository.save(team);
+                        log.info("Updating team info: " + team.getTeamId());
+                        successUpdateTeam.add(team.getTeamId());
+                    }
+                    else {
+                        log.info("Team not found: " + teamId);
+                        failUpdateTeam.add(teamId);
+                    }
+                }
+            }
+            
+            return responseHandler.ok("Success: " + successUpdateTeam.size() +
+                    ", Fail: " + failUpdateTeam.size(), failUpdateTeam);  
+        }
+        else {
+            log.info("Competition not found");
+            return responseHandler.notFound("Competition not found", null);
+        }
+    }
+    
     /**
      * Generate competition id
      * @param head
