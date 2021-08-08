@@ -194,7 +194,13 @@ public class CompetitionService {
         }
     }
     
-    public ResponseEntity<BasicResponse> removeTeam (String competitionId,
+    /**
+     * Remove team(s) from a competition
+     * @param competitionId
+     * @param request
+     * @return 
+     */
+    public ResponseEntity<BasicResponse> removeTeamFromCompetition (String competitionId,
             CompetitionAddTeamRequest request){
         
         if(competitionId == null || competitionId.isEmpty()){

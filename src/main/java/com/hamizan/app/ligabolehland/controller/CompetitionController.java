@@ -47,4 +47,11 @@ public class CompetitionController extends LigaBolehlandController {
         return service.addTeamToCompetition(competitionId, request);
     }
     
+    @PostMapping("/competition/{competition-id}/removeTeam")
+    public ResponseEntity<BasicResponse> removeTeam (
+            @PathVariable("competition-id") String competitionId,
+            @RequestBody CompetitionAddTeamRequest request){
+        return service.removeTeamFromCompetition(competitionId, request);
+    }
+    
 }
