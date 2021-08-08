@@ -15,6 +15,7 @@ public class CompetitionRequest {
     private String type;
     private String dateStart;
     private String dateEnd;
+    private String totalTeam;
 
     public String getCompetitionName() {
         return competitionName;
@@ -46,6 +47,14 @@ public class CompetitionRequest {
 
     public void setDateEnd(String dateEnd) {
         this.dateEnd = dateEnd;
+    }
+
+    public String getTotalTeam() {
+        return totalTeam;
+    }
+
+    public void setTotalTeam(String totalTeam) {
+        this.totalTeam = totalTeam;
     }
     
 }

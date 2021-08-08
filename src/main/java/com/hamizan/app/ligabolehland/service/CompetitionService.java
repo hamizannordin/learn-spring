@@ -6,13 +6,18 @@
 package com.hamizan.app.ligabolehland.service;
 
 import com.hamizan.app.ligabolehland.database.Competition;
+import com.hamizan.app.ligabolehland.database.Team;
 import com.hamizan.app.ligabolehland.repository.CompetitionRepository;
+import com.hamizan.app.ligabolehland.repository.TeamRepository;
+import com.hamizan.app.ligabolehland.request.CompetitionAddTeamRequest;
 import com.hamizan.app.ligabolehland.request.CompetitionRequest;
 import com.hamizan.app.ligabolehland.response.BasicResponse;
 import com.hamizan.app.ligabolehland.util.DateFormatter;
 import com.hamizan.app.ligabolehland.util.ResponseHandler;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +35,9 @@ public class CompetitionService {
     
     @Autowired
     private CompetitionRepository competitionRepository;
+    
+    @Autowired
+    private TeamRepository teamRepository;
     
     @Autowired
     private DateFormatter dateFormatter;
@@ -76,6 +84,12 @@ public class CompetitionService {
             return responseHandler.badRequest("Invalid competition type", null);
         }
         
+        if(request.getTotalTeam() == null || request.getTotalTeam().isEmpty() ||
+                !request.getTotalTeam().matches("[0-9]*2")){
+            log.info("Invalid total team");
+            return responseHandler.badRequest("Invalid total team", null);
+        }
+        
         Competition competition = new Competition();
         competition.setCompetitionId(competitionId);
         competition.setCompetitionName(request.getCompetitionName());
@@ -83,6 +97,7 @@ public class CompetitionService {
         competition.setCompetitionStart(dateStart);
         competition.setCompetitionEnd(dateEnd);
         competition.setStatus("NOT STARTED");
+        competition.setTotalTeam(Integer.parseInt(request.getTotalTeam()));
         
         competitionRepository.save(competition);
         
@@ -94,7 +109,7 @@ public class CompetitionService {
     /**
      * View a competition detail
      * @param competitionId
-     * @return 
+     * @return competition
      */
     public ResponseEntity<BasicResponse> viewCompetition (String competitionId){
         
@@ -108,6 +123,70 @@ public class CompetitionService {
         if(competition != null){
             log.info("Competition found: " + competition.getCompetitionName());
             return responseHandler.ok("Success", competition);
+        }
+        else {
+            log.info("Competition not found");
+            return responseHandler.notFound("Competition not found", null);
+        }
+    }
+    
+    /**
+     * Add team(s) to a competition
+     * @param competitionId
+     * @param request
+     * @return success or fail
+     */
+    public ResponseEntity<BasicResponse> addTeamToCompetition (String competitionId,
+            CompetitionAddTeamRequest request){
+        
+        if(competitionId.isEmpty()){
+            log.info("Invalid competition id");
+            return responseHandler.badRequest("Invalid competition id", null);
+        }
+        
+        if(request.getTeamList() == null || request.getTeamList().isEmpty()){
+            log.info("No team to add");
+            return responseHandler.badRequest("No team to add", null);
+        }
+        
+        Competition competition = competitionRepository.findByCompetitionId(competitionId);
+        
+        if(competition != null){
+            
+            boolean leagueFlag = false;
+            if(competition.getType().equalsIgnoreCase("LEAGUE")){
+                leagueFlag = true;
+            }
+            
+            List<String> successUpdateTeam = new ArrayList<>();
+            List<String> failUpdateTeam = new ArrayList<>();
+            
+            List<String> teamList = request.getTeamList();
+            
+            for(String teamId : teamList){
+                Team team = teamRepository.findTeamById(teamId);
+                if(team != null){
+                    if(leagueFlag){
+                        team.setLeagueId(competition);
+                    }
+                    else{
+                        team.setCupId(competition);
+                    }
+                    log.info("Updating team info: " + team.getTeamId());
+                    teamRepository.save(team);
+                    successUpdateTeam.add(teamId);
+                }
+                else {
+                    log.info("Team not found: " + teamId);
+                    failUpdateTeam.add(teamId);
+                }
+            }
+            
+            //List<List> teamSummary = new ArrayList<>();
+            //teamSummary.add(successUpdateTeam);
+            //teamSummary.add(failUpdateTeam);
+            return responseHandler.ok("Success: " + successUpdateTeam.size() +
+                    ", Fail: " + failUpdateTeam.size(), failUpdateTeam);
         }
         else {
             log.info("Competition not found");

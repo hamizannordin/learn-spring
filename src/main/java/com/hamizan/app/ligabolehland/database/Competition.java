@@ -41,6 +41,9 @@ public class Competition implements Serializable {
 
     @Column(name = "STATUS")
     private String status;
+
+    @Column(name = "TOTAL_TEAM")
+    private int totalTeam;
     
     public Competition() {
     }
@@ -91,6 +94,14 @@ public class Competition implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public int getTotalTeam() {
+        return totalTeam;
+    }
+
+    public void setTotalTeam(int totalTeam) {
+        this.totalTeam = totalTeam;
     }
     
 }

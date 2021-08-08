@@ -46,8 +46,8 @@ public class TeamService {
         Team team = new Team();
         team.setTeamName(request.getTeamName());
         team.setStadiumId(request.getStadiumId());
-        team.setLeagueId(request.getLeagueId());
-        team.setCupId(request.getCupId());
+        //team.setLeagueId(request.getLeagueId());
+        //team.setCupId(request.getCupId());
         team.setManagerId(request.getManagerId());
         team.setHomeKit(request.getHomeKit());
         team.setAwayKit(request.getAwayKit());
@@ -119,12 +119,12 @@ public class TeamService {
             if(request.getTeamName() != null && !request.getTeamName().isEmpty()){
                 team.setTeamName(request.getTeamName());
             }
-            if(request.getLeagueId() != null){
+            /*if(request.getLeagueId() != null){
                 team.setLeagueId(request.getLeagueId());
             }
             if(request.getCupId() != null){
                 team.setCupId(request.getCupId());
-            }
+            }*/
             if(request.getStadiumId() != null){
                 team.setStadiumId(request.getStadiumId());
             }

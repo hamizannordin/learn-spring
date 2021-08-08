@@ -6,6 +6,7 @@
 package com.hamizan.app.ligabolehland.controller;
 
 import com.hamizan.app.ligabolehland.LigaBolehlandController;
+import com.hamizan.app.ligabolehland.request.CompetitionAddTeamRequest;
 import com.hamizan.app.ligabolehland.request.CompetitionRequest;
 import com.hamizan.app.ligabolehland.response.BasicResponse;
 import com.hamizan.app.ligabolehland.service.CompetitionService;
@@ -37,6 +38,13 @@ public class CompetitionController extends LigaBolehlandController {
     public ResponseEntity<BasicResponse> view (
             @PathVariable("competition-id") String competitionId){
         return service.viewCompetition(competitionId);
+    }
+    
+    @PostMapping("/competition/{competition-id}/addTeam")
+    public ResponseEntity<BasicResponse> addTeam (
+            @PathVariable("competition-id") String competitionId,
+            @RequestBody CompetitionAddTeamRequest request){
+        return service.addTeamToCompetition(competitionId, request);
     }
     
 }

@@ -9,6 +9,8 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -29,11 +31,13 @@ public class Team implements Serializable {
     @Column(name = "STADIUM_ID")
     private String stadiumId;
     
-    @Column(name = "LEAGUE_ID")
-    private String leagueId;
+    @ManyToOne
+    @JoinColumn(name = "LEAGUE_ID", referencedColumnName = "COMPETITION_ID")
+    private Competition leagueId;
     
-    @Column(name = "CUP_ID")
-    private String cupId;
+    @ManyToOne
+    @JoinColumn(name = "CUP_ID", referencedColumnName = "COMPETITION_ID")
+    private Competition cupId;
     
     @Column(name = "MANAGER_ID")
     private String managerId;
@@ -71,19 +75,19 @@ public class Team implements Serializable {
         this.stadiumId = stadiumId;
     }
 
-    public String getLeagueId() {
+    public Competition getLeagueId() {
         return leagueId;
     }
 
-    public void setLeagueId(String leagueId) {
+    public void setLeagueId(Competition leagueId) {
         this.leagueId = leagueId;
     }
 
-    public String getCupId() {
+    public Competition getCupId() {
         return cupId;
     }
 
-    public void setCupId(String cupId) {
+    public void setCupId(Competition cupId) {
         this.cupId = cupId;
     }
 
