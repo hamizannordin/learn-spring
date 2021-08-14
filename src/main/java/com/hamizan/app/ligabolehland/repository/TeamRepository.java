@@ -22,8 +22,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class TeamRepository extends RepositoryFacade {
-
-    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
     
     public TeamRepository() {
         this.log = LoggerFactory.getLogger(getClass().getName());
@@ -35,6 +33,7 @@ public class TeamRepository extends RepositoryFacade {
     
     public Team findTeamById (String teamId){
         
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Team> query = criteriaBuilder.createQuery(Team.class);
         Root<Team> team = query.from(Team.class);
         
@@ -58,7 +57,8 @@ public class TeamRepository extends RepositoryFacade {
     }
     
     public List<Team> findTeamByCompetitionId (String competitionId, boolean flag){
-    
+        
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Team> query = criteriaBuilder.createQuery(Team.class);
         Root<Team> team = query.from(Team.class);
         
