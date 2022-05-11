@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.hamizan.app.ligabolehland.repository;
+package com.hamizan.app.ligabolehland;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -16,9 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author hamizan
  */
-public class RepositoryFacade {
+public class LigaBolehlandRepository {
     
-    Logger log;
+    public Logger log;
     
     @PersistenceContext
     public EntityManager entityManager;

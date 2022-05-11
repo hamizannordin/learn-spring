@@ -5,6 +5,7 @@
  */
 package com.hamizan.app.ligabolehland.repository;
 
+import com.hamizan.app.ligabolehland.LigaBolehlandRepository;
 import com.hamizan.app.ligabolehland.database.Competition;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ import org.springframework.stereotype.Repository;
  * @author hamizan
  */
 @Repository
-public class CompetitionRepository extends RepositoryFacade {
+public class CompetitionRepository extends LigaBolehlandRepository {
 
     public CompetitionRepository() {
         this.log = LoggerFactory.getLogger(getClass().getName());

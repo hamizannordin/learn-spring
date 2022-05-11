@@ -5,6 +5,7 @@
  */
 package com.hamizan.app.ligabolehland.repository;
 
+import com.hamizan.app.ligabolehland.LigaBolehlandRepository;
 import com.hamizan.app.ligabolehland.database.Player;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -23,7 +24,7 @@ import org.springframework.stereotype.Repository;
  * @author hamizan
  */
 @Repository
-public class PlayerRepository extends RepositoryFacade {
+public class PlayerRepository extends LigaBolehlandRepository {
 
     public long count () {
         return count(Player.class);
