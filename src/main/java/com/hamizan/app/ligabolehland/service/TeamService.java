@@ -5,14 +5,12 @@
  */
 package com.hamizan.app.ligabolehland.service;
 
+import com.hamizan.app.ligabolehland.LigaBolehlandService;
 import com.hamizan.app.ligabolehland.database.Team;
-import com.hamizan.app.ligabolehland.repository.TeamRepository;
 import com.hamizan.app.ligabolehland.request.TeamRequest;
 import com.hamizan.app.ligabolehland.response.BasicResponse;
-import com.hamizan.app.ligabolehland.util.ResponseHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -21,15 +19,9 @@ import org.springframework.stereotype.Service;
  * @author hamizan
  */
 @Service
-public class TeamService {
+public class TeamService extends LigaBolehlandService {
     
     Logger log = LoggerFactory.getLogger(this.getClass().getName());
-    
-    @Autowired
-    TeamRepository teamRepo;
-    
-    @Autowired
-    ResponseHandler responseHandler;
 
     /**
      * Create new team
@@ -52,7 +44,7 @@ public class TeamService {
         team.setHomeKit(request.getHomeKit());
         team.setAwayKit(request.getAwayKit());
         
-        String teamCount = Long.toString(teamRepo.count() + 1);
+        String teamCount = Long.toString(teamRepository.count() + 1);
         String teamId = "T-";
         
         int idStopper = 5  - teamCount.length();
@@ -67,10 +59,10 @@ public class TeamService {
         
         team.setTeamId(teamId);
         
-        long count = teamRepo.count();
+        long count = teamRepository.count();
         log.info(Long.toString(count));
             
-        teamRepo.save(team);
+        teamRepository.save(team);
         
         log.info("Success create team: " + team.getTeamId());
         return responseHandler.ok("Success", team);
@@ -88,7 +80,7 @@ public class TeamService {
             return responseHandler.badRequest("Team id is null or empty", null);
         }
             
-        Team team = teamRepo.findTeamById(teamId);
+        Team team = teamRepository.findTeamById(teamId);
         
         if(team != null){
             log.info("Team found: " + team.getTeamId());
@@ -113,7 +105,7 @@ public class TeamService {
             return responseHandler.badRequest("Team id is null or empty", null);
         }
         
-        Team team = teamRepo.findTeamById(teamId);
+        Team team = teamRepository.findTeamById(teamId);
         
         if(team != null){
             if(request.getTeamName() != null && !request.getTeamName().isEmpty()){
@@ -139,7 +131,7 @@ public class TeamService {
             }
             
             log.info("Updating team: " + team.getTeamId());
-            teamRepo.save(team);
+            teamRepository.save(team);
             return responseHandler.ok("Success", team);
         }
         else {

@@ -29,7 +29,7 @@ public class Match implements Serializable {
     private String matchId;
     
     @ManyToOne
-    @JoinColumn(name = "COMPETITON_ID", referencedColumnName = "COMPETITION_ID")
+    @JoinColumn(name = "COMPETITION_ID", referencedColumnName = "COMPETITION_ID")
     private Competition competitionId;
     
     @OneToOne
@@ -41,10 +41,10 @@ public class Match implements Serializable {
     private Team awayTeamId;
     
     @Column(name = "HOME_TEAM_SCORE")
-    private int homeTeamScore;
+    private String homeTeamScore;
     
     @Column(name = "AWAY_TEAM_SCORE")
-    private int awayTeamScore;
+    private String awayTeamScore;
     
     @Column(name = "MATCH_DATETIME")
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
@@ -52,6 +52,9 @@ public class Match implements Serializable {
     
     @Column(name = "MATCH_STATUS")
     private String matchStatus;
+    
+    @Column(name = "ROUND")
+    private String round;
 
     public Match() {
     }
@@ -88,19 +91,19 @@ public class Match implements Serializable {
         this.awayTeamId = awayTeamId;
     }
 
-    public int getHomeTeamScore() {
+    public String getHomeTeamScore() {
         return homeTeamScore;
     }
 
-    public void setHomeTeamScore(int homeTeamScore) {
+    public void setHomeTeamScore(String homeTeamScore) {
         this.homeTeamScore = homeTeamScore;
     }
 
-    public int getAwayTeamScore() {
+    public String getAwayTeamScore() {
         return awayTeamScore;
     }
 
-    public void setAwayTeamScore(int awayTeamScore) {
+    public void setAwayTeamScore(String awayTeamScore) {
         this.awayTeamScore = awayTeamScore;
     }
 
@@ -118,5 +121,13 @@ public class Match implements Serializable {
 
     public void setMatchStatus(String matchStatus) {
         this.matchStatus = matchStatus;
+    }
+
+    public String getRound() {
+        return round;
+    }
+
+    public void setRound(String round) {
+        this.round = round;
     }
 }

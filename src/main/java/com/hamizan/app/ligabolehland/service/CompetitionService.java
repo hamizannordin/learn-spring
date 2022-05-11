@@ -5,22 +5,18 @@
  */
 package com.hamizan.app.ligabolehland.service;
 
+import com.hamizan.app.ligabolehland.LigaBolehlandService;
 import com.hamizan.app.ligabolehland.database.Competition;
 import com.hamizan.app.ligabolehland.database.Team;
-import com.hamizan.app.ligabolehland.repository.CompetitionRepository;
-import com.hamizan.app.ligabolehland.repository.TeamRepository;
 import com.hamizan.app.ligabolehland.request.CompetitionAddTeamRequest;
 import com.hamizan.app.ligabolehland.request.CompetitionRequest;
 import com.hamizan.app.ligabolehland.response.BasicResponse;
-import com.hamizan.app.ligabolehland.util.DateFormatter;
-import com.hamizan.app.ligabolehland.util.ResponseHandler;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -29,21 +25,9 @@ import org.springframework.stereotype.Service;
  * @author hamizan
  */
 @Service
-public class CompetitionService {
+public class CompetitionService extends LigaBolehlandService {
     
     Logger log = LoggerFactory.getLogger(getClass().getName());
-    
-    @Autowired
-    private CompetitionRepository competitionRepository;
-    
-    @Autowired
-    private TeamRepository teamRepository;
-    
-    @Autowired
-    private DateFormatter dateFormatter;
-    
-    @Autowired
-    private ResponseHandler responseHandler;
     
     /**
      * Create new competition

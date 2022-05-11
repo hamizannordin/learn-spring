@@ -5,18 +5,15 @@
  */
 package com.hamizan.app.ligabolehland.service;
 
+import com.hamizan.app.ligabolehland.LigaBolehlandService;
 import com.hamizan.app.ligabolehland.database.Player;
 import com.hamizan.app.ligabolehland.request.PlayerRequest;
-import com.hamizan.app.ligabolehland.repository.PlayerRepository;
 import com.hamizan.app.ligabolehland.response.BasicResponse;
 import com.hamizan.app.ligabolehland.response.PlayerViewResponse;
-import com.hamizan.app.ligabolehland.util.DateFormatter;
-import com.hamizan.app.ligabolehland.util.ResponseHandler;
 import java.text.ParseException;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -26,18 +23,9 @@ import org.springframework.stereotype.Service;
  * @author hamizan
  */
 @Service
-public class PlayerService {
+public class PlayerService extends LigaBolehlandService {
     
     Logger log = LoggerFactory.getLogger(this.getClass().getName());
-    
-    @Autowired
-    PlayerRepository playerRepo;
-    
-    @Autowired
-    DateFormatter dateFormatter;
-    
-    @Autowired
-    ResponseHandler responseHandler;
     
     /**
      * Create new player
@@ -52,7 +40,7 @@ public class PlayerService {
                     new BasicResponse("Player name is null"));
         }
         
-        String playerCount = Long.toString(playerRepo.count() + 1);
+        String playerCount = Long.toString(playerRepository.count() + 1);
         String playerId = "P-";
         
         int idStopper = 10  - playerCount.length();
@@ -84,7 +72,7 @@ public class PlayerService {
         
         log.info("Saving player.... " + playerId);
         //Player newPlayer = playerRepo.save(player);
-        playerRepo.save(player);
+        playerRepository.save(player);
         
         //if(newPlayer != null){
             log.info("Success create player");
@@ -111,7 +99,7 @@ public class PlayerService {
                 new BasicResponse("Player id is null or empty"));
         }
         
-        Player player = playerRepo.findPlayerByPlayerId(playerId);
+        Player player = playerRepository.findPlayerByPlayerId(playerId);
         
         if(player != null){
             log.info("Found player: " + player.getPlayerId());
@@ -154,7 +142,7 @@ public class PlayerService {
         String playerId = request.getPlayerId();
         log.info("Finding player with id: " + playerId);
         
-        Player player = playerRepo.findPlayerByPlayerId(playerId);
+        Player player = playerRepository.findPlayerByPlayerId(playerId);
         
         if(player == null){
             log.info("Player not found");
@@ -185,7 +173,7 @@ public class PlayerService {
         
         log.info("Updating player detail...");
         //Player updatedPlayer = playerRepo.save(player);
-        playerRepo.save(player);
+        playerRepository.save(player);
         
         //if(updatedPlayer != null){
             log.info("Success update player " + playerId);
@@ -213,7 +201,7 @@ public class PlayerService {
             String position, String year, String teamId, String nationality, 
             String transferStatus, String contract, String wage) {
         
-        List<Player> listPlayer = playerRepo.findPlayerWithParam(playerName,
+        List<Player> listPlayer = playerRepository.findPlayerWithParam(playerName,
                 position, year, teamId, nationality, transferStatus, contract, wage);
         
         if(listPlayer != null){
