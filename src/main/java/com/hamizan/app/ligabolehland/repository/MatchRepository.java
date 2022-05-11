@@ -6,8 +6,13 @@
 package com.hamizan.app.ligabolehland.repository;
 
 import com.hamizan.app.ligabolehland.database.Match;
+import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
@@ -23,15 +28,17 @@ public class MatchRepository extends RepositoryFacade {
     }
     
     public List<Match> getMatchListByCompetitionId (String competitionId){
-        String sql = "SELECT * FROM `MATCH` m WHERE m.COMPETITION_ID =:competitionId";
-        try {
-            Query q = entityManager.createNativeQuery(sql, Match.class);
-            q.setParameter("competitionId", competitionId);
-            return (List<Match>) q.getResultList();
-        }
-        catch (Exception e){
-            log.debug(e.getMessage());
-            return null;
-        }
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Match> query = criteriaBuilder.createQuery(Match.class);
+        Root<Match> match = query.from(Match.class);
+        
+        Path<String> idPath = match.get("competitionId");
+        
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(criteriaBuilder.like(idPath, competitionId));
+        
+        query.select(match).where(criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()])));
+        
+        return entityManager.createQuery(query).getResultList();
     }
 }

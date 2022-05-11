@@ -32,12 +32,8 @@ public class Team implements Serializable {
     private String stadiumId;
     
     @ManyToOne
-    @JoinColumn(name = "LEAGUE_ID", referencedColumnName = "COMPETITION_ID")
-    private Competition leagueId;
-    
-    @ManyToOne
-    @JoinColumn(name = "CUP_ID", referencedColumnName = "COMPETITION_ID")
-    private Competition cupId;
+    @JoinColumn(name = "COMPETITION_ID", referencedColumnName = "COMPETITION_ID")
+    private Competition competitionId;
     
     @Column(name = "MANAGER_ID")
     private String managerId;
@@ -75,20 +71,12 @@ public class Team implements Serializable {
         this.stadiumId = stadiumId;
     }
 
-    public Competition getLeagueId() {
-        return leagueId;
+    public Competition getCompetitionId() {
+        return competitionId;
     }
 
-    public void setLeagueId(Competition leagueId) {
-        this.leagueId = leagueId;
-    }
-
-    public Competition getCupId() {
-        return cupId;
-    }
-
-    public void setCupId(Competition cupId) {
-        this.cupId = cupId;
+    public void setCompetitionId(Competition competitionId) {
+        this.competitionId = competitionId;
     }
 
     public String getManagerId() {

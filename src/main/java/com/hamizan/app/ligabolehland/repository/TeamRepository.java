@@ -56,19 +56,13 @@ public class TeamRepository extends RepositoryFacade {
         }
     }
     
-    public List<Team> findTeamByCompetitionId (String competitionId, boolean flag){
+    public List<Team> findTeamByCompetitionId (String competitionId){
         
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Team> query = criteriaBuilder.createQuery(Team.class);
         Root<Team> team = query.from(Team.class);
         
-        Path<String> idPath;
-        if(flag){
-            idPath = team.get("leagueId");
-        }
-        else{
-            idPath = team.get("cupId");
-        }
+        Path<String> idPath = team.get("competitionId");
         List<Predicate> predicates = new ArrayList<>();
         
         predicates.add(criteriaBuilder.like(idPath, competitionId));

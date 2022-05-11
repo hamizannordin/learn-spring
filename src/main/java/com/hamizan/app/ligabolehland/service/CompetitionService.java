@@ -153,10 +153,10 @@ public class CompetitionService {
         
         if(competition != null){
             
-            boolean leagueFlag = false;
-            if(competition.getType().equalsIgnoreCase("LEAGUE")){
-                leagueFlag = true;
-            }
+            //boolean leagueFlag = false;
+            //if(competition.getType().equalsIgnoreCase("LEAGUE")){
+            //    leagueFlag = true;
+            //}
             
             List<String> successUpdateTeam = new ArrayList<>();
             List<String> failUpdateTeam = new ArrayList<>();
@@ -166,12 +166,7 @@ public class CompetitionService {
             for(String teamId : teamList){
                 Team team = teamRepository.findTeamById(teamId);
                 if(team != null){
-                    if(leagueFlag){
-                        team.setLeagueId(competition);
-                    }
-                    else{
-                        team.setCupId(competition);
-                    }
+                    team.setCompetitionId(competition);
                     log.info("Updating team info: " + team.getTeamId());
                     teamRepository.save(team);
                     successUpdateTeam.add(teamId);
@@ -227,20 +222,7 @@ public class CompetitionService {
                     Team team = teamRepository.findTeamById(teamId);
                     
                     if(team != null){
-                        if(competition.getType().equalsIgnoreCase("LEAGUE")){
-                            if(team.getLeagueId() != null && team.getLeagueId()
-                                    .getCompetitionId()
-                                    .equalsIgnoreCase(competitionId)){
-                                team.setLeagueId(null);
-                            }
-                        }
-                        else {
-                            if(team.getCupId() != null && team.getCupId()
-                                    .getCompetitionId()
-                                    .equalsIgnoreCase(competitionId)){
-                                team.setCupId(null);
-                            }
-                        }
+                        team.setCompetitionId(null);
                         teamRepository.save(team);
                         log.info("Updating team info: " + team.getTeamId());
                         successUpdateTeam.add(team.getTeamId());
