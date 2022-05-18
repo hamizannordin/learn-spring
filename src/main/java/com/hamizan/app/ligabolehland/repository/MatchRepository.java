@@ -6,6 +6,7 @@
 package com.hamizan.app.ligabolehland.repository;
 
 import com.hamizan.app.ligabolehland.LigaBolehlandRepository;
+import com.hamizan.app.ligabolehland.database.Competition;
 import com.hamizan.app.ligabolehland.database.Match;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +33,9 @@ public class MatchRepository extends LigaBolehlandRepository {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Match> query = criteriaBuilder.createQuery(Match.class);
         Root<Match> match = query.from(Match.class);
+        Root<Competition> competition = query.from(Competition.class);
         
-        Path<String> idPath = match.get("competitionId");
+        Path<String> idPath = competition.get("competitionId");
         
         List<Predicate> predicates = new ArrayList<>();
         predicates.add(criteriaBuilder.like(idPath, competitionId));

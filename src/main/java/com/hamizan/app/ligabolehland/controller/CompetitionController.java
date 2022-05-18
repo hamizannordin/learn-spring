@@ -54,4 +54,10 @@ public class CompetitionController extends LigaBolehlandController {
         return service.removeTeamFromCompetition(competitionId, request);
     }
     
+    @GetMapping("/competition/{competition-id}/fixture")
+    public ResponseEntity<BasicResponse> getFixture (
+            @PathVariable("competition-id") String competitionId) {
+        return service.getCompetitionFixture(competitionId);
+    }
+    
 }
